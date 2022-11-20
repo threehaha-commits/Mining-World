@@ -4,8 +4,6 @@ public class Binder
 {
     private readonly BlockFinder _blockFinder;
     private readonly BlockClicker _blockClicker;
-    private readonly Backpack[] _backpack;
-    private readonly BackpackSlotsFinder _backpackSlotsFinder;
     private readonly Player _player;
     
     public Binder()
@@ -13,8 +11,6 @@ public class Binder
         CInjectHelper.FindObjectsOnScene();
         _blockFinder = Object.FindObjectOfType<BlockFinder>();
         _blockClicker = Object.FindObjectOfType<BlockClicker>();
-        _backpack = Resources.FindObjectsOfTypeAll<Backpack>();
-        _backpackSlotsFinder = Object.FindObjectOfType<BackpackSlotsFinder>();
         _player = Object.FindObjectOfType<Player>();
     }
     
@@ -24,8 +20,6 @@ public class Binder
         Bind<Camera>.Value(Camera.main);
         Bind<BlockFinder>.Value(_blockFinder);
         Bind<BlockClicker>.Value(_blockClicker);
-        Bind<Backpack>.Value(_backpack[0]);
-        Bind<BackpackSlotsFinder>.Value(_backpackSlotsFinder);
         BindInterface();
     }
     

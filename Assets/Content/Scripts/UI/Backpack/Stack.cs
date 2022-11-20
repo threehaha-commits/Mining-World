@@ -14,6 +14,11 @@
         _currentCount++;
     }
 
+    public void Add(int value)
+    {
+        _currentCount += value;
+    }
+    
     public void Remove()
     {
         _currentCount--;

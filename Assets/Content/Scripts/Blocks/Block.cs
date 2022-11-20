@@ -2,6 +2,8 @@
 
 public class Block : MonoBehaviour
 {
+    [SerializeField] private Ore _oreType;
+    public Ore oreType => _oreType;
     private SpriteRenderer _renderer;
     public SpriteRenderer spriteRenderer => _renderer;
     private Collider2D _collider2D;

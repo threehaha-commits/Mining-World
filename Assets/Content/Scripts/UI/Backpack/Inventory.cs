@@ -1,55 +1,49 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
-public class Backpack : MonoBehaviour, IInitialize
+public class Inventory : MonoBehaviour, IInitialize
 {
-        [Inject] private BackpackSlotsFinder _viewer;
-        private readonly List<Slot> _slots = new ();
+        private InventorySlot[] _slots;
         
         void IInitialize.Initialize()
         {
-                var images = _viewer.GetSlots();
-                foreach (var img in images)
-                {
-                        _slots.Add(new Slot(img, true, _viewer.GetText()));
-                }
+                _slots = GetComponentsInChildren<InventorySlot>();
+                Bind<Inventory>.Value(this);
         }
 
         public void AddItem(Block item)
         {
-                var itemSprite = item.spriteRenderer.sprite;
                 var itemImage = item.GetComponent<SpriteRenderer>();
                 if (Contains(itemImage, out var index))
                 {
                         if (_slots[index].IsFull)
-                                FindEmptySlot(itemSprite);
+                                FindEmptySlot(item);
                         else
                                 _slots[index].Increase();
                         return;
                 }
-                AddItemToEmptySlot(itemSprite);
+                AddItemToEmptySlot(item);
         }
 
-        private void FindEmptySlot(Sprite itemSprite)
+        private void FindEmptySlot(Block item)
         {
                 foreach (var slot in _slots)
                 {
                         if (slot.IsEmpty())
                         {
-                                AddItemToEmptySlot(itemSprite);
+                                AddItemToEmptySlot(item);
                                 break;
                         }
                 }
         }
 
-        private void AddItemToEmptySlot(Sprite itemSprite)
+        private void AddItemToEmptySlot(Block item)
         {
-                foreach (var slot in _slots)
+                for (var i = 0; i < _slots.Length; i++)
                 {
-                        if (slot.IsEmpty())
+                        if (_slots[i].IsEmpty())
                         {
-                                slot.ChangeKey(itemSprite);
+                                ISlotAdder changer = _slots[i];
+                                changer.AddSlot(item.spriteRenderer.sprite, item.oreType);
                                 break;
                         }
                 }
@@ -57,7 +51,7 @@ public class Backpack : MonoBehaviour, IInitialize
 
         private bool Contains(SpriteRenderer image, out int index)
         {
-                for (int i = 0; i < _slots.Count; i++)
+                for (int i = 0; i < _slots.Length; i++)
                 {
                         if (_slots[i].Contains(image))
                         {

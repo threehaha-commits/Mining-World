@@ -16,10 +16,10 @@ public class OreCreator : ScriptableObject
     //Значение шума при котором будет появлятся данная руда
     [SerializeField] private float[] _oreTypeFromNoise;
     
-    public void StartInitialize(ref List<List<Cell>> blocksFromMap)
+    public void StartInitialize(List<List<Cell>> blocksFromMap)
     {
         _blockFromMap = blocksFromMap;
-        _generator = new FieldGenerator(ref _blockFromMap);
+        _generator = new FieldGenerator(_blockFromMap);
         LoadOresFromResources();
         Initialize();
     }
@@ -57,10 +57,13 @@ public class OreCreator : ScriptableObject
             if (!(pos.y < current)) 
                 continue;
             var randomSprite = Random.Range(0, 2);
-            ore.Key.Sprite = _ores[i, randomSprite].sprite;
-            var blockHit = ore.Key.GameObject.GetComponent<BlockHit>();
-            var blockHitCount = _ores[i, randomSprite].GetComponent<BlockHit>().GetHit();
-            blockHit.SetHit(blockHitCount);
+            var parent = ore.Key.Transform.parent;
+            ore.Key.GameObject.SetActive(false);
+            var newOre = Instantiate(_ores[i, randomSprite], pos, Quaternion.identity, parent);
+            newOre.gameObject.SetActive(true);
+            // var blockHit = ore.Key.GameObject.GetComponent<BlockHit>();
+            // var blockHitCount = _ores[i, randomSprite].GetComponent<BlockHit>().GetHit();
+            // blockHit.SetHit(blockHitCount);
         }
     }
 

@@ -3,7 +3,7 @@
 public class Mining : MonoBehaviour
 {
     [Inject] private BlockClicker _blockClicker;
-    [Inject] private Backpack _backpack;
+    [Inject] private Inventory _backpack;
     
     public void DoMining()
     {

@@ -8,7 +8,7 @@ public class FieldGenerator
 {
     private readonly List<List<Cell>> _blockFromMap;
 
-    public FieldGenerator(ref List<List<Cell>> blockFromMap)
+    public FieldGenerator(List<List<Cell>> blockFromMap)
     {
         _blockFromMap = blockFromMap;
     }

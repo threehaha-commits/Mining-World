@@ -1,0 +1,1 @@
+﻿public enum Ore{Null, Dirt, Stone, Coal, Lava, BrownIron, Silver, Gold, Emerald, Diamond }
