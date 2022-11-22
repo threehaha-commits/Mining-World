@@ -2,6 +2,7 @@
 
 public class Block : MonoBehaviour
 {
+    [SerializeField] private Sprite[] _blockSprite;
     [SerializeField] private Ore _oreType;
     public Ore oreType => _oreType;
     private SpriteRenderer _renderer;
@@ -16,5 +17,7 @@ public class Block : MonoBehaviour
         _collider2D = GetComponent<Collider2D>();
         _renderer = GetComponent<SpriteRenderer>();
         _blockHit = GetComponent<BlockHit>();
+        var random = Random.Range(0, _blockSprite.Length);
+        _renderer.sprite = _blockSprite[random];
     }
 }

@@ -2,24 +2,32 @@
 
 public class Updater : MonoBehaviour, IInitialize
 {
+    [Inject] private RecipeFinder _recipeFinder;
+    
     public void UpdateSlot(Slot slot, Slot root)
     {
-            var isPointerUnder = PointerHelper.PointerOverUI<CraftSlot>(out var result);
-            if (isPointerUnder)
+            var isPointerOverSlot = PointerHelper.PointerOverUI<Slot>(out var slotResult);
+            if (isPointerOverSlot)
             {
-                if(result.IsEmpty())
+                if(slotResult.IsEmpty())
                 {
-                    ISlotChanger changer = result;
+                    ISlotChanger changer = slotResult;
                     changer.ChangeSlot(slot);
                     root.RemoveSlot();
                 }
                 else
                 {
-                    if(slot.GetOre() == result.GetOre())
+                    if(slot.GetOre() == slotResult.GetOre())
                     {
-                        result.Increase(slot.GetStack().Size());
+                        if(slotResult == root) // Защита от клика
+                        {
+                            slot.RemoveSlot();
+                            return;
+                        }
+                        slotResult.Increase(slot.GetStack().Size());
                         root.RemoveSlot();
                     }
+                    _recipeFinder.UpdateItems();
                 }
             }
     }

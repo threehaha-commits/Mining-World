@@ -8,7 +8,7 @@ public class OreCreator : ScriptableObject
     private List<List<Cell>> _blockFromMap;
     [SerializeField, Range(5.5f, 6f)] private float _oreIntensity;
     private FieldGenerator _generator;
-    private SpriteRenderer[,] _ores;
+    private SpriteRenderer[] _ores;
 
     //Чем меньше данный показатель, тем больше плотность руды
     [SerializeField] private float[] _oreDensity;
@@ -20,34 +20,22 @@ public class OreCreator : ScriptableObject
     {
         _blockFromMap = blocksFromMap;
         _generator = new FieldGenerator(_blockFromMap);
-        LoadOresFromResources();
+        _ores = LoadOresFromResources();
         Initialize();
-    }
-    
-    private void LoadOresFromResources()
-    {
-        var ores = Resources.LoadAll<SpriteRenderer>("Ores");
-        _ores = new SpriteRenderer[ores.Length / 2, 2];
-        for (int i = 0, j = 0; i < ores.Length / 2; i++)
-        {
-            var k = 0;
-            _ores[i, k++] = ores[j++];
-            _ores[i, k] = ores[j++];
-        }
     }
 
     private void Initialize()
     {
-        for (int i = 0; i < _ores.GetLength(0); i++)
+        for (int i = 0; i < _ores.Length - 1; i++)
         {
-            var oreFieldsRadius = Random.Range(8.5f, 19.5f);
+            var oreFieldsRadius = Random.Range(4.5f, 11.5f); //Произвольные магические числа
             Create(oreFieldsRadius, i);
         }
     }
 
     private void Create(float radiusOreField, int i)
     {
-        var generatedOreDict = _generator.Result(radiusOreField, _oreIntensity, _oreTypeFromNoise[i]);
+        var generatedOreDict = _generator.Result(radiusOreField, _oreIntensity, GetNoiseValue(i));
         foreach (var ore in generatedOreDict)
         {
             if (!(ore.Value >= _oreDensity[i])) 
@@ -56,22 +44,31 @@ public class OreCreator : ScriptableObject
             var current = GetOrePosition(i);
             if (!(pos.y < current)) 
                 continue;
-            var randomSprite = Random.Range(0, 2);
             var parent = ore.Key.Transform.parent;
             ore.Key.GameObject.SetActive(false);
-            var newOre = Instantiate(_ores[i, randomSprite], pos, Quaternion.identity, parent);
+            var newOre = Instantiate(_ores[i + 1], pos, Quaternion.identity, parent);
             newOre.gameObject.SetActive(true);
-            // var blockHit = ore.Key.GameObject.GetComponent<BlockHit>();
-            // var blockHitCount = _ores[i, randomSprite].GetComponent<BlockHit>().GetHit();
-            // blockHit.SetHit(blockHitCount);
         }
     }
 
+    private float GetNoiseValue(int i)
+    {
+        var oreCount = _ores.Length;
+        float pieceOfWorld = (1f / oreCount);
+        float result = i * pieceOfWorld;
+        return result;
+    }
+    
     private float GetOrePosition(int i)
     {
         var indexTopBlock = _blockFromMap[i].Count- 1;
         var topBlockPositionY = _blockFromMap[i][indexTopBlock].Position.y;
         var pieceOfWorld = topBlockPositionY / _oreDensity.Length;
         return topBlockPositionY - pieceOfWorld * i;
+    }
+    
+    private SpriteRenderer[] LoadOresFromResources()
+    {
+        return Resources.LoadAll<SpriteRenderer>("Ores");
     }
 }

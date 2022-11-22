@@ -24,6 +24,12 @@ public class Inventory : MonoBehaviour, IInitialize
                 AddItemToEmptySlot(item);
         }
 
+        public void RemoveItem(int index)
+        {
+                if(_slots[index] != null)
+                        _slots[index].RemoveSlot();
+        }
+        
         private void FindEmptySlot(Block item)
         {
                 foreach (var slot in _slots)

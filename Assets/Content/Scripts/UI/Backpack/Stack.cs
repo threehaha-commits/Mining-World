@@ -1,4 +1,4 @@
-﻿public class Stack
+﻿public class Stack : IIncreasable
 {
     private int _currentCount;
     private readonly int _maxCount = 24;
@@ -9,12 +9,12 @@
         return _currentCount;
     }
     
-    public void Add()
+    public void Increase()
     {
         _currentCount++;
     }
 
-    public void Add(int value)
+    public void Increase(int value)
     {
         _currentCount += value;
     }

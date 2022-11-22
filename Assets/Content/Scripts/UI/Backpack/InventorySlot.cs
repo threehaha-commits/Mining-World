@@ -7,14 +7,6 @@ public class InventorySlot : Slot, ISlotAdder
         SetSlot(this);
     }
 
-    public override void ChangeSlot(Slot slot)
-    {
-        _oreType = slot.GetOre();
-        _image.sprite = slot.GetSprite();
-        _stack = slot.GetStack();
-        PrintSize();
-    }
-
     void ISlotAdder.AddSlot(Sprite image, Ore oreType)
     {
         _oreType = oreType;

@@ -1,8 +1,9 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Slot : MonoBehaviour, ISlotChanger
+public class Slot : MonoBehaviour, ISlotChanger, IIncreasable
 {
     protected Stack _stack = new();
 
@@ -79,32 +80,40 @@ public class Slot : MonoBehaviour, ISlotChanger
     
     public void Increase()
     {
-        _stack.Add();
+        _stack.Increase();
+        _text.text = $"{_slotSize}";
+    }
+    
+    public void Decrease()
+    {
+        _stack.Increase(-1);
         _text.text = $"{_slotSize}";
     }
     
     public void Increase(int value)
     {
-        _stack.Add(value);
+        _stack.Increase(value);
         _text.text = $"{_slotSize}";
     }
     
-    public void RemoveSlot()
+    public virtual void RemoveSlot()
     {
-        Debug.Log(gameObject.name);
         _oreType = Ore.Null;
         _image.sprite = _defaultSprite;
         _stack = null;
         PrintSize();
     }
 
-    protected void PrintSize()
+    private void PrintSize()
     {
         _text.text = $"{_slotSize}";
     }
     
     public virtual void ChangeSlot(Slot slot)
     {
-        
+        _oreType = slot.GetOre();
+        _image.sprite = slot.GetSprite();
+        _stack = slot.GetStack();
+        PrintSize();
     }
 }

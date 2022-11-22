@@ -9,25 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa85273b1c8941fd89806472d9000412, type: 3}
-  m_Name: OreCreator
+  m_Script: {fileID: 11500000, guid: 827ef0e458b6421a83342f5c208121d2, type: 3}
+  m_Name: AxeBronze
   m_EditorClassIdentifier: 
-  _oreIntensity: 5.679
-  _oreDensity:
-  - 0.27
-  - 0.35
-  - 0.55
-  - 0.35
-  - 0.25
-  - 0.2
-  - 0.18
-  - 0.15
-  _oreTypeFromNoise:
-  - 0.45
-  - 0.4
-  - 0.3
-  - 0.5
-  - 0.53
-  - 0.6
-  - 0.5
-  - 0.55
+  Name: Axe bronze
+  Description: 
+  Icon: {fileID: 21300000, guid: 656bffcbd9b280e43be0c79120bfe344, type: 3}
+  Ores:
+  - Ore: 1
+    Count: 2
+  - Ore: 3
+    Count: 2

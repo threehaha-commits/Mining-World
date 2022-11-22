@@ -25,8 +25,8 @@ public class Binder
     
     private void BindInterface()
     {
-        var interfacesOnScene = Bind<IInitialize>.GetInterfaces();
-        foreach (var @interface in interfacesOnScene)
+        var iInitializes = Bind<IInitialize>.GetInterfaces();
+        foreach (var @interface in iInitializes)
         {
             @interface.Initialize();
         }

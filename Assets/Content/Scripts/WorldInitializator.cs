@@ -9,7 +9,7 @@ public class WorldInitializator : MonoBehaviour
     private void Start()
     {
         var world = new World(_oreCreator);
-        world.Create(64);
+        world.Create(46);
         var binder = new Binder();
         binder.Bind();
     }

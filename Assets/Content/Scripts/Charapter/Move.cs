@@ -21,6 +21,8 @@ public class Move : MonoBehaviour
         Direction = Input.GetAxis("Horizontal") * _speed * Time.fixedDeltaTime;
         var flip = transform.rotation.y == 0 ? 1 : -1;
         _transform.Translate(Direction * flip, 0, 0);
-        AnimHandler.Direction(Direction);
+        var inputDirectionHandler = !Mathf.Approximately(Direction, 0f);
+        Debug.Log(inputDirectionHandler);
+        AnimHandler.Play(inputDirectionHandler);
     }
 }

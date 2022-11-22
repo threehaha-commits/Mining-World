@@ -10,7 +10,10 @@ public static class WorldHelper
         get
         {
             if(_grass[0] == null)
-                _grass = Resources.LoadAll<SpriteRenderer>("Grass");
+            {
+                _grass[1] = Resources.Load<SpriteRenderer>("Grass/Dirt Grass");
+                _grass[0] = Resources.Load<SpriteRenderer>("Ores/0. Dirt");
+            }
             return _grass;
         }
     }
