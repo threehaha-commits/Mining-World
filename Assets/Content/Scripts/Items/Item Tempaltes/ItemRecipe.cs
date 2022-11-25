@@ -7,6 +7,7 @@ public class ItemRecipe : ScriptableObject
         [Multiline]
         public string Description;
 
+        public ItemTemplate Item;
         public Sprite Icon;
         public OreInfo[] Ores;
 }

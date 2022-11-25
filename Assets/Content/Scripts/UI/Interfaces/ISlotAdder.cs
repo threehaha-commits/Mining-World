@@ -2,5 +2,5 @@
 
 interface ISlotAdder
 {
-    void AddSlot(Sprite image, Ore oreType);
+    void Add(ISlot slot);
 }

@@ -18,6 +18,16 @@
     {
         _currentCount += value;
     }
+
+    public void Decrease()
+    {
+        _currentCount--;
+    }
+    
+    public void Decrease(int value)
+    {
+        _currentCount -= value;
+    }
     
     public void Remove()
     {

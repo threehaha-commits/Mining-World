@@ -1,18 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class RecipeFinder : MonoBehaviour, IInitialize
 {
-        [SerializeField] private ItemRecipe[] _recipes;
+        private ItemRecipe[] _recipes;
         private readonly List<CraftSlot> _craftSlot = new ();
         private readonly List<Ore> _ores = new ();
-        private UnityAction<ItemRecipe> _addRecipe;
-        private UnityAction _clear;
-        [Inject] private RecipeImage _recipeImage;
-        [Inject] private RecipesHelper _recipesHelper;
-        [Inject] private CraftButton _craftButton;
         [Inject] private RecipeVariantsDwn _recipeVariants;
         
         public void Add(CraftSlot craftSlot)
@@ -33,21 +26,9 @@ public class RecipeFinder : MonoBehaviour, IInitialize
         void IInitialize.Initialize()
         {
                 Bind<RecipeFinder>.Value(this);
-                BindEvents();
+                _recipes = Resources.LoadAll<ItemRecipe>("Recipes");
         }
 
-        private async void BindEvents()
-        {
-                await Task.Delay(500);
-                _addRecipe += _recipeImage.Add;
-                _addRecipe += _craftButton.UpdateButton;
-                _addRecipe += _recipesHelper.Visualize;
-                _clear += _recipeImage.Clear;
-                _clear += _recipesHelper.Clear;
-                _clear += _craftButton.Clear;
-                _clear += _recipeVariants.Clear;
-        }
-        
         public void UpdateItems()
         {
                 var list = new List<ItemRecipe>();
@@ -68,21 +49,13 @@ public class RecipeFinder : MonoBehaviour, IInitialize
                                 }
                         }
                 }
-
-                foreach (var l in list)
-                {
-                        Debug.Log(l.Name);
-                }
         }
 
         private void SetInfoToVisualizer(List<ItemRecipe> list)
         {
                 if (list.Count > 0)
-                {
-                        _addRecipe.Invoke(list[0]);
                         _recipeVariants.Add(list.ToArray());
-                }
                 else
-                        _clear.Invoke();
+                        _recipeVariants.Clear();
         }
 }

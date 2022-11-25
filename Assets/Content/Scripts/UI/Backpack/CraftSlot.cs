@@ -1,12 +1,7 @@
-﻿public class CraftSlot : Slot
+﻿public class CraftSlot : Slot, IInitialize
 {
     [Inject] private RecipeFinder _itemCrafter;
     
-    private void Start()
-    {
-        SetSlot(this);
-    }
-
     public override void ChangeSlot(Slot slot)
     {
         base.ChangeSlot(slot);
@@ -17,6 +12,11 @@
     {
         _itemCrafter?.Remove(this); 
         base.RemoveSlot();
-        _itemCrafter.UpdateItems();
+        _itemCrafter?.UpdateItems();
+    }
+
+    void IInitialize.Initialize()
+    {
+        SetSlot(this);
     }
 }

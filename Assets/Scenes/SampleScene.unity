@@ -757,7 +757,19 @@ MonoBehaviour:
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 260005356}
+        m_TargetAssemblyTypeName: RecipeVariantsDwn, Assembly-CSharp
+        m_MethodName: ChangeRecipe
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &260005354
 MonoBehaviour:
@@ -809,8 +821,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1799279c874c1b9e4170d94e27cee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemRecipesDwn: {fileID: 0}
-  _optionData: []
 --- !u!1 &295126376
 GameObject:
   m_ObjectHideFlags: 0
@@ -1080,7 +1090,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 125, y: 125}
-  m_Spacing: {x: 35, y: 35}
+  m_Spacing: {x: 35, y: 24.27}
   m_Constraint: 2
   m_ConstraintCount: 2
 --- !u!114 &416044101
@@ -1522,14 +1532,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a285a6be3af4711b8d406c5d607ff01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textCount:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _oresFromBlocks: []
 --- !u!1 &544733089
 GameObject:
   m_ObjectHideFlags: 0
@@ -1579,10 +1581,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179eba17c35f40aaa3e067b803ed65e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recipes:
-  - {fileID: 11400000, guid: 8032258d154d4b946937c9f71128dbc5, type: 2}
-  - {fileID: 11400000, guid: 3f96776fa8ff5774b945c5cc750bad94, type: 2}
-  - {fileID: 11400000, guid: e410744dba3c4604ebe79a21c1a6e20b, type: 2}
 --- !u!1001 &580989058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1981,7 +1979,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -7.4999847, y: -0.5}
+  m_AnchoredPosition: {x: -7.5, y: -0.5}
   m_SizeDelta: {x: -35, y: -13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &680757598
@@ -2657,7 +2655,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 927755550}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 927755552}
+        m_TargetAssemblyTypeName: CraftButton, Assembly-CSharp
+        m_MethodName: Craft
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &927755550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2708,7 +2718,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb587a82b8bf4c5488d3c7957a5fd442, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _craftSlots: []
 --- !u!1 &935843690
 GameObject:
   m_ObjectHideFlags: 0
@@ -6089,6 +6098,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64b1240babe6481d87911f6a10261c1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weight: 2.5
 --- !u!4 &1957112287
 Transform:
   m_ObjectHideFlags: 0

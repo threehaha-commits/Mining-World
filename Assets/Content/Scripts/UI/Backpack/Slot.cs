@@ -5,18 +5,10 @@ using UnityEngine.UI;
 
 public class Slot : MonoBehaviour, ISlotChanger, IIncreasable
 {
+    protected SlotType _slotType;
     protected Stack _stack = new();
 
-    protected int _slotSize
-    {
-        get
-        {
-            if (_stack == null)
-                return 0;
-            
-            return _stack.Size();
-        }
-    }
+    private int _slotSize => _stack == null ? 0 : _stack.Size();
     public bool IsFull => _stack.IsFull;
     [SerializeField] protected Ore _oreType;
     [SerializeField] protected Image _image;
@@ -33,6 +25,11 @@ public class Slot : MonoBehaviour, ISlotChanger, IIncreasable
         _defaultSprite = _image.sprite;
     }
 
+    public SlotType GetSlotType()
+    {
+        return _slotType;
+    }
+    
     public Stack GetStack()
     {
         return _stack;
@@ -75,7 +72,7 @@ public class Slot : MonoBehaviour, ISlotChanger, IIncreasable
 
     public bool IsEmpty()
     {
-        return _oreType == Ore.Null;
+        return _image.sprite == _defaultSprite;
     }
     
     public void Increase()
@@ -86,7 +83,13 @@ public class Slot : MonoBehaviour, ISlotChanger, IIncreasable
     
     public void Decrease()
     {
-        _stack.Increase(-1);
+        _stack.Decrease();
+        _text.text = $"{_slotSize}";
+    }
+    
+    public void Decrease(int value)
+    {
+        _stack.Decrease(value);
         _text.text = $"{_slotSize}";
     }
     
@@ -101,12 +104,12 @@ public class Slot : MonoBehaviour, ISlotChanger, IIncreasable
         _oreType = Ore.Null;
         _image.sprite = _defaultSprite;
         _stack = null;
-        PrintSize();
+        ChangeStackText(String.Empty);
     }
 
-    private void PrintSize()
+    private void ChangeStackText(string text)
     {
-        _text.text = $"{_slotSize}";
+        _text.text = text;
     }
     
     public virtual void ChangeSlot(Slot slot)
@@ -114,6 +117,6 @@ public class Slot : MonoBehaviour, ISlotChanger, IIncreasable
         _oreType = slot.GetOre();
         _image.sprite = slot.GetSprite();
         _stack = slot.GetStack();
-        PrintSize();
+        ChangeStackText(_oreType.Equals(Ore.Null) ? String.Empty : _slotSize.ToString());
     }
 }

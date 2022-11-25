@@ -12,12 +12,12 @@ public class RecipeImage : MonoBehaviour, IInitialize
         _itemRecipeImage.sprite = _defaultSprite;
     }
     
-    public void Add(ItemRecipe recipe)
+    public void ChangeImage(ItemRecipe recipe)
     {
         _itemRecipeImage.sprite = recipe.Icon;
     }
 
-    public void Initialize()
+    void IInitialize.Initialize()
     {
         Bind<RecipeImage>.Value(this);
         _itemRecipeImage = GetComponent<Image>();

@@ -4,34 +4,50 @@ public class Updater : MonoBehaviour, IInitialize
 {
     [Inject] private RecipeFinder _recipeFinder;
     
-    public void UpdateSlot(Slot slot, Slot root)
+    public void UpdateSlot(Slot draggerSlot, Slot originalSlot)
     {
-            var isPointerOverSlot = PointerHelper.PointerOverUI<Slot>(out var slotResult);
+            var isPointerOverSlot = PointerHelper.PointerOverUI<Slot>(out var slotUnderMouse); //Если слот перенесли на UI, то получаем его
             if (isPointerOverSlot)
             {
-                if(slotResult.IsEmpty())
+                //Если слот, в который мы хотим переместить пуст, то меняем его
+                if(slotUnderMouse.IsEmpty())
                 {
-                    ISlotChanger changer = slotResult;
-                    changer.ChangeSlot(slot);
-                    root.RemoveSlot();
+                    ChangeSlot(draggerSlot, originalSlot, slotUnderMouse);
                 }
                 else
                 {
-                    if(slot.GetOre() == slotResult.GetOre())
-                    {
-                        if(slotResult == root) // Защита от клика
-                        {
-                            slot.RemoveSlot();
-                            return;
-                        }
-                        slotResult.Increase(slot.GetStack().Size());
-                        root.RemoveSlot();
-                    }
+                    if (SlotIsConsumable(draggerSlot))
+                        IncreaseValueToSlot(draggerSlot, originalSlot, slotUnderMouse);
+                    
                     _recipeFinder.UpdateItems();
                 }
             }
     }
-    
+
+    private bool SlotIsConsumable(Slot slot)
+    {
+        return slot.GetSlotType() == SlotType.Consumable;
+    }
+
+    private void IncreaseValueToSlot(Slot slot, Slot root, Slot slotResult)
+    {
+        if (slotResult == root) // Защита от удаления кликом
+        {
+            slot.RemoveSlot();
+            return;
+        }
+
+        slotResult.Increase(slot.GetStack().Size());
+        root.RemoveSlot();
+    }
+
+    private void ChangeSlot(Slot slot, Slot root, Slot slotResult)
+    {
+        ISlotChanger changer = slotResult;
+        changer.ChangeSlot(slot);
+        root.RemoveSlot(); //Обязательно удаляем оригинал!
+    }
+
     void IInitialize.Initialize()
     {
         Bind<Updater>.Value(this);

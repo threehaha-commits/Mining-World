@@ -3,34 +3,34 @@
 public class Inventory : MonoBehaviour, IInitialize
 {
         private InventorySlot[] _slots;
-        
+
         void IInitialize.Initialize()
         {
                 _slots = GetComponentsInChildren<InventorySlot>();
                 Bind<Inventory>.Value(this);
         }
-
-        public void AddItem(Block item)
+        
+        public void AddItem(ISlot item)
         {
-                var itemImage = item.GetComponent<SpriteRenderer>();
-                if (Contains(itemImage, out var index))
+                var itemImage = item._icon;
+                if (InventoryHelper.Contains(_slots, itemImage, out var index))
                 {
                         if (_slots[index].IsFull)
-                                FindEmptySlot(item);
+                                FindSuitableSlot(item);
                         else
                                 _slots[index].Increase();
                         return;
                 }
                 AddItemToEmptySlot(item);
         }
-
+        
         public void RemoveItem(int index)
         {
                 if(_slots[index] != null)
                         _slots[index].RemoveSlot();
         }
         
-        private void FindEmptySlot(Block item)
+        private void FindSuitableSlot(ISlot item)
         {
                 foreach (var slot in _slots)
                 {
@@ -42,34 +42,16 @@ public class Inventory : MonoBehaviour, IInitialize
                 }
         }
 
-        private void AddItemToEmptySlot(Block item)
+        private void AddItemToEmptySlot(ISlot item)
         {
                 for (var i = 0; i < _slots.Length; i++)
                 {
                         if (_slots[i].IsEmpty())
                         {
                                 ISlotAdder changer = _slots[i];
-                                changer.AddSlot(item.spriteRenderer.sprite, item.oreType);
+                                changer.Add(item);
                                 break;
                         }
                 }
-        }
-
-        private bool Contains(SpriteRenderer image, out int index)
-        {
-                for (int i = 0; i < _slots.Length; i++)
-                {
-                        if (_slots[i].Contains(image))
-                        {
-                                if(_slots[i].IsFull == false)
-                                {
-                                        index = i;
-                                        return true;
-                                }
-                        }
-                }
-
-                index = -1;
-                return false;
         }
 }

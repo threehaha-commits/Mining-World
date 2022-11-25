@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Block : MonoBehaviour
+public class Block : MonoBehaviour, IOreSlot
 {
     [SerializeField] private Sprite[] _blockSprite;
     [SerializeField] private Ore _oreType;
@@ -19,5 +19,17 @@ public class Block : MonoBehaviour
         _blockHit = GetComponent<BlockHit>();
         var random = Random.Range(0, _blockSprite.Length);
         _renderer.sprite = _blockSprite[random];
+    }
+
+    Sprite ISlot._icon
+    {
+        get => _renderer.sprite;
+        set => _renderer.sprite = value;
+    }
+
+    Ore IOreSlot._oreType
+    {
+        get => _oreType;
+        set => _oreType = value;
     }
 }

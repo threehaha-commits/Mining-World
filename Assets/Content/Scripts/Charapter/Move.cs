@@ -4,6 +4,7 @@ public class Move : MonoBehaviour
 {
     [SerializeField] private float _speed;
     private Transform _transform;
+    private Anim _anim;
     
     public float Direction
     {
@@ -13,6 +14,7 @@ public class Move : MonoBehaviour
 
     private void Start()
     {
+        _anim = GetComponent<Anim>();
         _transform = transform;
     }
 
@@ -22,7 +24,6 @@ public class Move : MonoBehaviour
         var flip = transform.rotation.y == 0 ? 1 : -1;
         _transform.Translate(Direction * flip, 0, 0);
         var inputDirectionHandler = !Mathf.Approximately(Direction, 0f);
-        Debug.Log(inputDirectionHandler);
-        AnimHandler.Play(inputDirectionHandler);
+        _anim.Get().SetBool("Walk", inputDirectionHandler);
     }
 }

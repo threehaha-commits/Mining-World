@@ -9,10 +9,14 @@ public class BlockClicker : MonoBehaviour, IInitialize
     private Collider2D[] _blocks;
     private bool leftClick => Input.GetMouseButtonDown(0);
     [Inject] private Camera _camera;
+    [Inject] private Player _player;
     private GameObject _block;
+    private Anim _anim;
+    [SerializeField] private float _weight;
     
     void IInitialize.Initialize()
     {
+        _anim = _player.GetComponent<Anim>();
         _findTime = _blockFinder.FindTime;
         StartCoroutine(GetParams());
     }
@@ -25,7 +29,8 @@ public class BlockClicker : MonoBehaviour, IInitialize
             var hit = Physics2D.Raycast(clickPosition, transform.forward);
             if (hit.collider && _blocks.Contains(hit.collider))
             {
-                AnimHandler.SetMining(true);
+                _anim.Get().SetBool("Mining", true);
+                _anim.Get().SetLayerWeight(1, _weight);
                 _block = hit.collider.gameObject;
             }
             else

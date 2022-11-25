@@ -5,8 +5,8 @@ using UnityEngine.UI;
 public class RecipesHelper : MonoBehaviour, IInitialize
 {
     private readonly Image[] _images = new Image[6];
-    [SerializeField] private TMP_Text[] _textCount = new TMP_Text[6];
-    [SerializeField] private Block[] _oresFromBlocks;
+    private readonly TMP_Text[] _textCount = new TMP_Text[6];
+    private Block[] _oresFromBlocks;
     private Sprite _defaultSprite;
     private Color _defaultColor;
     

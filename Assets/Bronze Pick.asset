@@ -9,14 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 827ef0e458b6421a83342f5c208121d2, type: 3}
-  m_Name: PickBronze
+  m_Script: {fileID: 11500000, guid: 0cc8780b2547417b9ac7c8ff4d8385ce, type: 3}
+  m_Name: Bronze Pick
   m_EditorClassIdentifier: 
   Name: Pick bronze
   Description: 
   Icon: {fileID: 21300000, guid: 51724bb7064c529468f2024e271cbae0, type: 3}
-  Ores:
-  - Ore: 1
-    Count: 3
-  - Ore: 2
-    Count: 3

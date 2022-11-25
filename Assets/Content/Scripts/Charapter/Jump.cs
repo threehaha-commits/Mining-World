@@ -3,21 +3,11 @@ using UnityEngine;
 
 public class Jump
 {
-    public IEnumerator DoJump(Transform transform, AnimationCurve curve, float duration, float height, float _distanceToGround)
+    public IEnumerator DoJump(Rigidbody2D r2d, float power, float _distanceToGround)
     {
-        var expiredTime = 0f;
-        var startPos = transform.position;
-        var progressTime = 0f;
-        while (progressTime < 1f)
+        while (RayHelper.IsGround(r2d.transform, _distanceToGround))
         {
-            expiredTime += Time.deltaTime;
-            progressTime = expiredTime / duration;
-            var value = curve.Evaluate(progressTime);
-            transform.position = new Vector3(transform.position.x, startPos.y + value * height,
-                transform.position.z);
-            var isGround = RayHelper.IsGround(transform, _distanceToGround);
-            if(isGround)
-                yield break;
+            r2d.AddForce(Vector2.up * power, ForceMode2D.Impulse);
             yield return null;
         }
     }

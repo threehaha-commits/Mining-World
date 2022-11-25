@@ -20,15 +20,25 @@ public class Binder
         Bind<Camera>.Value(Camera.main);
         Bind<BlockFinder>.Value(_blockFinder);
         Bind<BlockClicker>.Value(_blockClicker);
-        BindInterface();
+        BindInitialize();
+        BindPostInitialize();
     }
     
-    private void BindInterface()
+    private void BindInitialize()
     {
         var iInitializes = Bind<IInitialize>.GetInterfaces();
-        foreach (var @interface in iInitializes)
+        foreach (var initialize in iInitializes)
         {
-            @interface.Initialize();
+            initialize.Initialize();
+        }
+    }
+    
+    private void BindPostInitialize()
+    {
+        var iPostInitializes = Bind<IPostInitialize>.GetInterfaces();
+        foreach (var postInitialize in iPostInitializes)
+        {
+            postInitialize.PostInitialize();
         }
     }
 }
