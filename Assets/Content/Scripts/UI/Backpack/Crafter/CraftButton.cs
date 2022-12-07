@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,8 @@ public class CraftButton : MonoBehaviour, IInitialize
     private CraftSlot[] _craftSlots;
     [Inject] private Inventory _inventory;
     private ItemRecipe _currentRecipe;
-        
+    private Dictionary<NonEquipSlot, int> _slotWithResourcesForCraft = new();
+    
     public void UpdateButton(ItemRecipe recipe)
     {
         if (_recipeImage.IsEmpty)
@@ -19,9 +21,9 @@ public class CraftButton : MonoBehaviour, IInitialize
         }
 
         var index = 0;
-        index = EqualsOreFromSlotsWithOreFromRecipes(recipe, index);
+        index = ItemFromSlotsEqualsRecipeItems(recipe, index);
 
-        if (index == recipe.Ores.Length)
+        if (index == recipe.ConsumableInfos.Length)
         {
             _button.interactable = true;
             _recipeImage.ChangeImage(recipe);
@@ -38,18 +40,39 @@ public class CraftButton : MonoBehaviour, IInitialize
     {
         Debug.Log("Craft");
         _inventory.AddItem(_currentRecipe.Item);
+        DecreaseResourcesFromCraftSlot();
+        UpdateButton(_currentRecipe);
     }
-    
-    private int EqualsOreFromSlotsWithOreFromRecipes(ItemRecipe recipe, int index)
+
+    private void DecreaseResourcesFromCraftSlot()
     {
+        var count = _slotWithResourcesForCraft.Count;
+        NonEquipSlot[] keys = _slotWithResourcesForCraft.Keys.ToArray();
+        int[] values = _slotWithResourcesForCraft.Values.ToArray();
+        for (int i = 0; i < count; i++)
+        {
+            IDecreasable decreasable = keys[i];
+            decreasable.Decrease(values[i]);
+        }
+    }
+
+    private int ItemFromSlotsEqualsRecipeItems(ItemRecipe recipe, int index)
+    {
+        _slotWithResourcesForCraft.Clear();
         for (int i = 0; i < _craftSlots.Length; i++)
         {
-            for (int j = 0; j < recipe.Ores.Length; j++)
+            for (int j = 0; j < recipe.ConsumableInfos.Length; j++)
             {
-                if (_craftSlots[i].GetOre().Equals(recipe.Ores[j].Ore))
+                ISlotable consumable = _craftSlots[i];
+                var a = consumable.name;
+                var b = recipe.ConsumableInfos[j].Item.name + "(Clone)";
+                if (a.Equals(b))
                 {
-                    if (_craftSlots[i].GetStack().Size() >= recipe.Ores[j].Count)
+                    if (_craftSlots[i]?.GetStack()?.Size() >= recipe.ConsumableInfos[j]?.Count)
+                    {
                         index++;
+                        _slotWithResourcesForCraft.Add(_craftSlots[i], recipe.ConsumableInfos[j].Count);
+                    }
                 }
             }
         }

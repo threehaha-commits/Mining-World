@@ -4,32 +4,41 @@ public class Updater : MonoBehaviour, IInitialize
 {
     [Inject] private RecipeFinder _recipeFinder;
     
-    public void UpdateSlot(Slot draggerSlot, Slot originalSlot)
+    public void UpdateSlot(ISlotable draggerSlot, ISlotable originalSlot)
     {
-            var isPointerOverSlot = PointerHelper.PointerOverUI<Slot>(out var slotUnderMouse); //Если слот перенесли на UI, то получаем его
-            if (isPointerOverSlot)
+        var isPointerOverSlot = PointerHelper.PointerOverUI<ISlotable>(out var slotUnderMouse); //Если слот перенесли на UI, то получаем его
+        if (isPointerOverSlot)
+        {
+            //Если слот, в который мы хотим переместить пуст, то меняем его
+            IItemAvailable available = slotUnderMouse as IItemAvailable;
+            var typeabe1 = slotUnderMouse as ISlotTypeable;
+            var typeabe2 = originalSlot as ISlotTypeable;
+            if(available.IsAvailable && (typeabe1.slotType == SlotType.Empty || typeabe1.slotType == typeabe2.slotType))
             {
-                //Если слот, в который мы хотим переместить пуст, то меняем его
-                if(slotUnderMouse.IsEmpty())
-                {
-                    ChangeSlot(draggerSlot, originalSlot, slotUnderMouse);
-                }
-                else
-                {
-                    if (SlotIsConsumable(draggerSlot))
-                        IncreaseValueToSlot(draggerSlot, originalSlot, slotUnderMouse);
-                    
-                    _recipeFinder.UpdateItems();
-                }
+                ChangeSlot(draggerSlot, originalSlot, slotUnderMouse);
             }
+            else
+            {
+                if (SlotIsConsumable(originalSlot, slotUnderMouse))
+                    IncreaseValueToSlot(draggerSlot, originalSlot, slotUnderMouse);
+                    
+                _recipeFinder.UpdateItems();
+            }
+        }
     }
 
-    private bool SlotIsConsumable(Slot slot)
+    private bool SlotIsConsumable(ISlotable slot, ISlotable slotUnderMouse)
     {
-        return slot.GetSlotType() == SlotType.Consumable;
+        var slotTypeable1 = slot as ISlotTypeable;
+        var slotTypeable2 = slotUnderMouse as ISlotTypeable;
+        if (slotTypeable1.slotType != SlotType.Consumable || slotTypeable2.slotType != SlotType.Consumable)
+            return false;
+        var a = slot.name;
+        var b = slotUnderMouse.name;
+        return a.Equals(b);
     }
 
-    private void IncreaseValueToSlot(Slot slot, Slot root, Slot slotResult)
+    private void IncreaseValueToSlot(ISlotable slot, ISlotable root, ISlotable slotResult)
     {
         if (slotResult == root) // Защита от удаления кликом
         {
@@ -37,13 +46,15 @@ public class Updater : MonoBehaviour, IInitialize
             return;
         }
 
-        slotResult.Increase(slot.GetStack().Size());
+        IIncreasable increasable = slotResult as IIncreasable;
+        IStackable stackable = slot as IStackable;
+        increasable.Increase(stackable.stackSize);
         root.RemoveSlot();
     }
 
-    private void ChangeSlot(Slot slot, Slot root, Slot slotResult)
+    private void ChangeSlot(ISlotable slot, ISlotable root, ISlotable slotResult)
     {
-        ISlotChanger changer = slotResult;
+        ISlotChanger changer = slotResult as ISlotChanger;
         changer.ChangeSlot(slot);
         root.RemoveSlot(); //Обязательно удаляем оригинал!
     }

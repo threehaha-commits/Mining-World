@@ -10,16 +10,23 @@ public class Inventory : MonoBehaviour, IInitialize
                 Bind<Inventory>.Value(this);
         }
         
-        public void AddItem(ISlot item)
+        public void AddItem(Iitem item)
         {
                 var itemImage = item._icon;
                 if (InventoryHelper.Contains(_slots, itemImage, out var index))
                 {
-                        if (_slots[index].IsFull)
-                                FindSuitableSlot(item);
-                        else
-                                _slots[index].Increase();
-                        return;
+                        if(_slots[index].GetSlotType().Equals(SlotType.Consumable))
+                        {
+                                IStackable stackable = _slots[index];
+                                if (stackable.isFull)
+                                        FindSuitableSlot(item);
+                                else
+                                {
+                                        IIncreasable increasable = _slots[index];
+                                        increasable.Increase();
+                                }
+                                return;
+                        }
                 }
                 AddItemToEmptySlot(item);
         }
@@ -30,11 +37,12 @@ public class Inventory : MonoBehaviour, IInitialize
                         _slots[index].RemoveSlot();
         }
         
-        private void FindSuitableSlot(ISlot item)
+        private void FindSuitableSlot(Iitem item)
         {
                 foreach (var slot in _slots)
                 {
-                        if (slot.IsEmpty())
+                        IItemAvailable available = slot;
+                        if (available.IsAvailable)
                         {
                                 AddItemToEmptySlot(item);
                                 break;
@@ -42,11 +50,12 @@ public class Inventory : MonoBehaviour, IInitialize
                 }
         }
 
-        private void AddItemToEmptySlot(ISlot item)
+        private void AddItemToEmptySlot(Iitem item)
         {
                 for (var i = 0; i < _slots.Length; i++)
                 {
-                        if (_slots[i].IsEmpty())
+                        IItemAvailable available = _slots[i];
+                        if (available.IsAvailable)
                         {
                                 ISlotAdder changer = _slots[i];
                                 changer.Add(item);

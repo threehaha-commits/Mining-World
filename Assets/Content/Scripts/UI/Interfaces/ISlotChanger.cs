@@ -1,4 +1,4 @@
-﻿interface ISlotChanger
+﻿interface ISlotChanger : ISlotable
 {
-    void ChangeSlot(Slot slot);
+    void ChangeSlot(ISlotable slot);
 }

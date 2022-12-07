@@ -7,9 +7,10 @@ public static class InventoryHelper
     {
         for (int i = 0; i < _slots.Length; i++)
         {
-            if (_slots[i].Contains(sprite))
+            if (_slots[i].GetSprite() == sprite)
             {
-                if(_slots[i].IsFull == false)
+                IStackable stackable = _slots[i];
+                if(stackable.isFull == false)
                 {
                     index = i;
                     return true;

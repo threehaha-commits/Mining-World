@@ -1,4 +1,4 @@
-﻿public class Stack : IIncreasable
+﻿public class Stack : IIncreasable, IDecreasable
 {
     private int _currentCount;
     private readonly int _maxCount = 24;
@@ -27,10 +27,5 @@
     public void Decrease(int value)
     {
         _currentCount -= value;
-    }
-    
-    public void Remove()
-    {
-        _currentCount--;
     }
 }

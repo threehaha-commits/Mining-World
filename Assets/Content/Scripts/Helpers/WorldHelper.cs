@@ -11,7 +11,7 @@ public static class WorldHelper
         {
             if(_grass[0] == null)
             {
-                _grass[1] = Resources.Load<SpriteRenderer>("Grass/Dirt Grass");
+                _grass[1] = Resources.Load<SpriteRenderer>("Grass/0. Dirt");
                 _grass[0] = Resources.Load<SpriteRenderer>("Ores/0. Dirt");
             }
             return _grass;
@@ -58,9 +58,9 @@ public static class WorldHelper
         return value;
     }
     
-    public static SpriteRenderer CreateBlock(SpriteRenderer sprite, Vector2 position, Transform parent)
+    public static SpriteRenderer CreateBlock(ref SpriteRenderer sprite, ref Vector2 position, ref Transform parent)
     {
-        return Object.Instantiate(sprite, position, Quaternion.identity, parent).GetComponent<SpriteRenderer>();
+        return Object.Instantiate(sprite, position, Quaternion.identity, parent);
     }
 
     public static Vector2 GetPosition(Vector2 spriteSize, int i, int j)
@@ -76,5 +76,11 @@ public static class WorldHelper
     public static Vector2 GetSpriteSize(SpriteRenderer spriteRendererObject)
     {
         return spriteRendererObject.size;
+    }
+    
+    
+    public static SpriteRenderer[] LoadOresFromResources()
+    {
+        return Resources.LoadAll<SpriteRenderer>("Ores");
     }
 }

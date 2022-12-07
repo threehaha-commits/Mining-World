@@ -12,7 +12,6 @@ public class BlockClicker : MonoBehaviour, IInitialize
     [Inject] private Player _player;
     private GameObject _block;
     private Anim _anim;
-    [SerializeField] private float _weight;
     
     void IInitialize.Initialize()
     {
@@ -29,8 +28,7 @@ public class BlockClicker : MonoBehaviour, IInitialize
             var hit = Physics2D.Raycast(clickPosition, transform.forward);
             if (hit.collider && _blocks.Contains(hit.collider))
             {
-                _anim.Get().SetBool("Mining", true);
-                _anim.Get().SetLayerWeight(1, _weight);
+                _anim.Get().SetTrigger("Mining");
                 _block = hit.collider.gameObject;
             }
             else

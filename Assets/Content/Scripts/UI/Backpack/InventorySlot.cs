@@ -1,28 +1,34 @@
-﻿using UnityEngine;
-
-public class InventorySlot : Slot, ISlotAdder, IInitialize
+﻿public class InventorySlot : NonEquipSlot, ISlotAdder, IInitialize
 {
-    void ISlotAdder.Add(ISlot slot)
+    private IIncreasable _increasable;
+    private ISlotable _slotable;
+    
+    private void Start()
     {
-        switch (slot)
-        {
-          case IOreSlot oreSlot:
-              _oreType = oreSlot._oreType;
-              _image.sprite = oreSlot._icon;
-              _stack = new Stack();
-              _slotType = SlotType.Consumable;
-              Increase();
-              break;
-          case IItemSlot itemSlot:
-              _image.sprite = itemSlot._icon;
-              _slotType = SlotType.NonCosumabe;
-              break;
-        }
+        _increasable = this;
+        _slotable = this;
     }
 
-    public bool Contains(Sprite sprite)
+    //При добавлении предмета мы смотрим его тип: расходуемый и не расходуемый
+    void ISlotAdder.Add(Iitem slot)
     {
-        return _image.sprite == sprite;
+        var typeable = slot as ISlotTypeable;
+        if(typeable.slotType == SlotType.Consumable)
+        {
+            var consumableItem = slot as IConsumable;
+            _slotable.consumable = consumableItem.consumable;
+            _stack = new Stack();
+            _increasable.Increase();
+        }
+        _image.sprite = slot._icon;
+        _slotType = typeable.slotType;
+        gameObject.name = slot._name;
+    }
+
+    public override void RemoveSlot()
+    {
+        base.RemoveSlot();
+        gameObject.name = "Inventory_Slot";
     }
 
     void IInitialize.Initialize()

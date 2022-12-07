@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class Block : MonoBehaviour, IOreSlot
+public class Block : Consumable, IConsumable, ISlotTypeable
 {
     [SerializeField] private Sprite[] _blockSprite;
     [SerializeField] private Ore _oreType;
@@ -10,6 +12,7 @@ public class Block : MonoBehaviour, IOreSlot
     private Collider2D _collider2D;
     public Collider2D colliders2d => _collider2D;
     private BlockHit _blockHit;
+    private SlotType _slotType;
     public BlockHit blockHit => _blockHit;
     
     private void Awake()
@@ -21,15 +24,15 @@ public class Block : MonoBehaviour, IOreSlot
         _renderer.sprite = _blockSprite[random];
     }
 
-    Sprite ISlot._icon
+    Sprite Iitem._icon => _renderer.sprite;
+
+    Consumable IConsumable.consumable
     {
-        get => _renderer.sprite;
-        set => _renderer.sprite = value;
+        get => this;
+        set => throw new NotImplementedException();
     }
 
-    Ore IOreSlot._oreType
-    {
-        get => _oreType;
-        set => _oreType = value;
-    }
+    string Iitem._name => gameObject.name;
+
+    SlotType ISlotTypeable.slotType => SlotType.Consumable;
 }

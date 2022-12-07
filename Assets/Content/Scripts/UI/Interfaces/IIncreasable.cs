@@ -1,4 +1,4 @@
-﻿interface IIncreasable
+﻿public interface IIncreasable
 {
     void Increase();
     void Increase(int value);

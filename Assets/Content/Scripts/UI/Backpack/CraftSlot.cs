@@ -1,8 +1,8 @@
-﻿public class CraftSlot : Slot, IInitialize
+﻿public class CraftSlot : NonEquipSlot, IInitialize
 {
     [Inject] private RecipeFinder _itemCrafter;
     
-    public override void ChangeSlot(Slot slot)
+    public override void ChangeSlot(ISlotable slot)
     {
         base.ChangeSlot(slot);
         _itemCrafter?.Add(this);

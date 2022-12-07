@@ -1,5 +1,11 @@
 ﻿public enum SlotType
 {
+    Empty,
     Consumable,
-    NonCosumabe
+    NonConsumable,
+    Head,
+    Body,
+    Legs,
+    LeftArm,
+    RightArm
 }

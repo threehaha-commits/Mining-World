@@ -1,8 +1,8 @@
 ﻿using System;
 
 [Serializable]
-public class OreInfo
+public class ConsumableInfo
 {
-    public Ore Ore;
+    public Consumable Item;
     public int Count;
 }

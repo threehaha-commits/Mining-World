@@ -15,12 +15,12 @@ GameObject:
   - component: {fileID: 3914502435108345684}
   - component: {fileID: 3149428271657811938}
   m_Layer: 3
-  m_Name: 3
+  m_Name: 3. Lava
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8702509247924893381
 Transform:
   m_ObjectHideFlags: 0

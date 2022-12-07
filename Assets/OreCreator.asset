@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa85273b1c8941fd89806472d9000412, type: 3}
   m_Name: OreCreator
   m_EditorClassIdentifier: 
-  _oreIntensity: 5.679
+  _oreIntensity: 6
   _oreDensity:
+  - 0.3
   - 0.27
   - 0.35
   - 0.55
@@ -23,6 +24,7 @@ MonoBehaviour:
   - 0.18
   - 0.15
   _oreTypeFromNoise:
+  - 0.5
   - 0.45
   - 0.4
   - 0.3

@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 public class OreCreator : ScriptableObject
 {
     private List<List<Cell>> _blockFromMap;
-    [SerializeField, Range(5.5f, 6f)] private float _oreIntensity;
+    [SerializeField, Range(0f, 10f)] private float _oreIntensity;
     private FieldGenerator _generator;
     private SpriteRenderer[] _ores;
 
@@ -26,7 +26,7 @@ public class OreCreator : ScriptableObject
 
     private void Initialize()
     {
-        for (int i = 0; i < _ores.Length - 1; i++)
+        for (int i = 0; i < _ores.Length; i++)
         {
             var oreFieldsRadius = Random.Range(4.5f, 11.5f); //Произвольные магические числа
             Create(oreFieldsRadius, i);
@@ -35,7 +35,7 @@ public class OreCreator : ScriptableObject
 
     private void Create(float radiusOreField, int i)
     {
-        var generatedOreDict = _generator.Result(radiusOreField, _oreIntensity, GetNoiseValue(i));
+        var generatedOreDict = _generator.Result(radiusOreField, _oreIntensity, _oreTypeFromNoise[i]);
         foreach (var ore in generatedOreDict)
         {
             if (!(ore.Value >= _oreDensity[i])) 
@@ -46,17 +46,9 @@ public class OreCreator : ScriptableObject
                 continue;
             var parent = ore.Key.Transform.parent;
             ore.Key.GameObject.SetActive(false);
-            var newOre = Instantiate(_ores[i + 1], pos, Quaternion.identity, parent);
+            var newOre = Instantiate(_ores[i], pos, Quaternion.identity, parent);
             newOre.gameObject.SetActive(true);
         }
-    }
-
-    private float GetNoiseValue(int i)
-    {
-        var oreCount = _ores.Length;
-        float pieceOfWorld = (1f / oreCount);
-        float result = i * pieceOfWorld;
-        return result;
     }
     
     private float GetOrePosition(int i)

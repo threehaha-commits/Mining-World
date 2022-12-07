@@ -21,7 +21,5 @@ public class Mining : MonoBehaviour
         block.blockHit.Hit();
         var blockComponent = block.GetComponent<Block>();
         _backpack.AddItem(blockComponent);
-        _anim.Get().SetBool("Mining", false);
-        _anim.Get().SetLayerWeight(1, 0f);
     }
 }

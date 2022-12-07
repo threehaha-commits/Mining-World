@@ -2,5 +2,5 @@
 
 interface ISlotAdder
 {
-    void Add(ISlot slot);
+    void Add(Iitem item);
 }

@@ -9,5 +9,5 @@ public class ItemRecipe : ScriptableObject
 
         public ItemTemplate Item;
         public Sprite Icon;
-        public OreInfo[] Ores;
+        public ConsumableInfo[] ConsumableInfos;
 }

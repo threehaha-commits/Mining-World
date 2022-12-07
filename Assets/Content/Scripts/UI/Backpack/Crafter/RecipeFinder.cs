@@ -5,7 +5,7 @@ public class RecipeFinder : MonoBehaviour, IInitialize
 {
         private ItemRecipe[] _recipes;
         private readonly List<CraftSlot> _craftSlot = new ();
-        private readonly List<Ore> _ores = new ();
+        private readonly List<Consumable> _ores = new ();
         [Inject] private RecipeVariantsDwn _recipeVariants;
         
         public void Add(CraftSlot craftSlot)
@@ -42,9 +42,12 @@ public class RecipeFinder : MonoBehaviour, IInitialize
                 {
                         for (int j = 0; j < _recipes.Length; j++) // Для каждого рецепта
                         {
-                                for (int k = 0; k < _recipes[j].Ores.Length; k++) // Для каждой руды в рецепте
+                                for (int k = 0; k < _recipes[j].ConsumableInfos.Length; k++) // Для каждой руды в рецепте
                                 {
-                                        if (_recipes[j].Ores[k].Ore.Equals(_craftSlot[i].GetOre()))
+                                        ISlotable consumable = _craftSlot[i];
+                                        var a = consumable.name;
+                                        var b = _recipes[j].ConsumableInfos[k].Item.name +"(Clone)";
+                                        if (a.Equals(b))
                                                 list.Add(_recipes[j]);
                                 }
                         }

@@ -12,20 +12,22 @@ public class RecipesHelper : MonoBehaviour, IInitialize
     
     public void Visualize(ItemRecipe recipe)
     {
-        for (int i = 0; i < recipe.Ores.Length; i++)
+        for (int i = 0; i < recipe.ConsumableInfos.Length; i++)
         {
-            var oreIndex = GetOreSprite(recipe, i);
+            var oreIndex = GetConsumableSprite(recipe, i);
             _images[i].sprite = oreIndex;
             _images[i].color = Color.white;
-            _textCount[i].text = $"{recipe.Ores[i].Count}";
+            _textCount[i].text = $"{recipe.ConsumableInfos[i].Count}";
         }
     }
 
-    private Sprite GetOreSprite(ItemRecipe recipe, int index)
+    private Sprite GetConsumableSprite(ItemRecipe recipe, int index)
     {
         for (int i = 0; i < _oresFromBlocks.Length; i++)
         {
-            if (_oresFromBlocks[i].oreType.Equals(recipe.Ores[index].Ore))
+            var a = _oresFromBlocks[i].name;
+            var b = recipe.ConsumableInfos[index].Item.name;
+            if (a.Equals(b))
                 return _oresFromBlocks[i].GetComponent<SpriteRenderer>().sprite;
         }
 
